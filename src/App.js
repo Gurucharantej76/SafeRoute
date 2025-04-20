@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import styled from 'styled-components';
-import MapView from './components/MapView';
+import GoogleMapView from './components/GoogleMapView';
 import RouteInput from './components/RouteInput';
 import SafetyLegend from './components/SafetyLegend';
 
@@ -28,6 +28,17 @@ const MainContent = styled.main`
 `;
 
 function App() {
+  const mapRef = useRef();
+
+  const handleRouteSearch = (source, destination) => {
+    if (mapRef.current) {
+      console.log('Searching route from:', source, 'to:', destination);
+      mapRef.current.getRoutesWithSafetyScore(source, destination);
+    } else {
+      console.error('Map reference not available');
+    }
+  };
+
   return (
     <Router>
       <AppContainer>
@@ -36,8 +47,8 @@ function App() {
           <p>Because safety matters more than speed</p>
         </Header>
         <MainContent>
-          <RouteInput />
-          <MapView />
+          <RouteInput onRouteSearch={handleRouteSearch} />
+          <GoogleMapView ref={mapRef} />
           <SafetyLegend />
         </MainContent>
       </AppContainer>

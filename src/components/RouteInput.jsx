@@ -38,13 +38,16 @@ const Button = styled.button`
   }
 `;
 
-const RouteInput = () => {
+const RouteInput = ({ onRouteSearch }) => {
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
 
   const handleSearch = () => {
-    // TODO: Implement route search logic
-    console.log('Searching route from:', source, 'to:', destination);
+    if (source && destination) {
+      onRouteSearch(source, destination);
+    } else {
+      alert('Please enter both source and destination');
+    }
   };
 
   return (
